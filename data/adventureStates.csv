@@ -1,0 +1,12 @@
+ID,StateName,ClassName,PNGFilename,CollisionFilename
+0,Start,PNGRoom,assets/Start Screen.png,
+1,Instruction,PNGRoom,assets/Instruction Screen.png,
+2,Shelter,PNGRoom,assets/Shelter.png,
+3,Crosswalk 1,PNGRoom,assets/Crosswalk to Neighborhood.png,
+4,Neighborhood,PNGRoom,assets/Neighborhood.png,
+5,Neighborhood 3,PNGRoom,assets/Neighborhood Upper.png,
+6,Neighborhood 2,PNGRoom,assets/Neighborhood 2.png,
+7,Park,PNGRoom,assets/Park.png,
+8,Park 2,PNGRoom,assets/Park 2.png,
+9,Lake,PNGRoom,assets/Lake.png,
+10,Crosswalk 2,PNGRoom,assets/Road 2.png,

@@ -1,0 +1,20 @@
+CurrentState,KeyTyped,KeyCode,MouseEvent,ClickableName,MapDirection,NextState
+Start,,,mouseReleased,,,Instruction
+Instruction,,,mouseReleased,,,Shelter
+Shelter,,,,,E,Crosswalk 1
+Crosswalk 1,,,,,W,Shelter
+Crosswalk 1,,,,,E,Neighborhood
+Neighborhood,,,,,N,Neighborhood 3
+Neighborhood,,,,,W,Crosswalk 1
+Neighborhood,,,,,E,Park
+Neighborhood 3,,,,,S,Neighborhood
+Park,,,,,W,Neighborhood
+Park,,,,,S,Park 2
+Park 2,,,,,N,Park
+Park 2,,,,,S,Lake
+Park 2,,,,,W,Neighborhood 2
+Lake,,,,,N,Park 2
+Neighborhood 2,,,,,E,Park 2
+Neighborhood 2,,,,,W,Crosswalk 2
+Crosswalk 2,,,,,W,Shelter
+Crosswalk 2,,,,,E,Neighborhood 2
