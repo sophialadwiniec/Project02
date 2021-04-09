@@ -196,14 +196,14 @@ class AdventureManager {
             return;
         }
 
-        print("set new state = " + newStateNum);
-
         this.states[this.currentState].unload();
         this.states[newStateNum].load();
         this.currentState = newStateNum;
 
         // store new state name from states table
         this.currentStateName = this.getStateStrFromNum(newStateNum);
+
+         print("Going to state: " + this.currentStateName);
 
         if( this.clickableArray !== null && this.clickableTable !== null ) {
             this.changeButtonsVisibilityFromState(this.currentStateName);
@@ -346,8 +346,6 @@ class AdventureManager {
 
             }
 
-            print( clickableStateArray[i] );
-            print(newStateName);
             // Otherwise, we are binding, so turn button on/off accordingly
             if( clickableStateArray[i] === newStateName ) {
                 this.clickableArray[i].visible = true;
@@ -380,18 +378,17 @@ function PNGRoomFindTheThis() {
 }
 
 function PNGCollisionTableLoaded() {
-    print("PNGCollisionTableLoaded()");
+    print("PNGCollisionTableLoaded() callback");
     let pThis = PNGRoomFindTheThis();
     if(pThis === null ) {
         print("Couldn't find the This");
     }
     else {
-        print("this =");
-        print(pThis);
+        print("pThis.stateName = " + pThis.stateName );
     }
 
      if( pThis.collisionTable !== null) { 
-        pThis.output("collisionTableLoaded(): collision table row count = " + pThis.collisionTable.getRowCount());
+        print("Collision table row count = " + pThis.collisionTable.getRowCount());
         for( let i = 0; i < pThis.collisionTable.getRowCount(); i++ ) {
             pThis.collisionSX[i] = pThis.collisionTable.getString(i, 'sx');
             pThis.collisionSY[i] = pThis.collisionTable.getString(i, 'sy');
@@ -400,6 +397,9 @@ function PNGCollisionTableLoaded() {
         }
 
         pThis.collisionTableLoaded = true;
+    }
+    else {
+        print("No collision table loaded");
     }
 }
 
@@ -429,7 +429,7 @@ class PNGRoom {
     // filepath to PNG is 1st variable
     // file to collision CSV is 2nd variable (may be empty string)
     setup(_imagePath, _collisionPath = "") {
-        print( "setup()" + _imagePath);
+        print( "PNGRoom.setup(): imagePath =" + _imagePath);
 
         this.imagePath = _imagePath;
 
@@ -442,7 +442,7 @@ class PNGRoom {
            
            PNGRoomPushedThisArray.push(this);
             this.collisionTable = loadTable(_collisionPath, 'csv', 'header', PNGCollisionTableLoaded);
-            this.output("setup(), loading collision table = " + _collisionPath);
+            print("PNGRoom.setup(): loading collisionTable: " + _collisionPath);
         }
     }
     
