@@ -1,11 +1,10 @@
 CurrentState,KeyTyped,KeyCode,MouseEvent,ClickableName,MapDirection,NextState
 Start,,,mouseReleased,,,Instruction
 Instruction,,,,Start,,Shelter
-Shelter,,,,,E,Crosswalk 
-Crosswalk ,,,,,W,Shelter
+Shelter,,,,,E,Crosswalk
+Crosswalk,,,,,W,Shelter
 Crosswalk,,,,,S,Crosswalk 2
-Crosswalk ,,,,,E,Fountain
-Crosswalk,,,,,S,Crosswalk 2
+Crosswalk,,,,,E,Fountain
 Fountain,,,,,N,Flower Garden
 Fountain,,,,,W,Crosswalk
 Fountain,,,,,S,Child Park
@@ -21,4 +20,4 @@ Child Park,,,,,E,Park Bench
 Child Park,,,,,N,Fountain
 Child Park,,,,,W,Crosswalk 2
 Crosswalk 2,,,,,E,Child Park
-Crosswalk 2,,,,,N,Crosswalk 
+Crosswalk 2,,,,,N,Crosswalk

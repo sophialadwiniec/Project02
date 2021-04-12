@@ -2,7 +2,7 @@ ID,StateName,ClassName,PNGFilename,CollisionFilename
 0,Start,PNGRoom,assets/Start Screen.png,
 1,Instruction,InstructionsScreen,assets/Instruction Screen.png,
 2,Shelter,PNGRoom,assets/Shelter.png,
-3,Crosswalk ,PNGRoom,assets/Crosswalk.png,assets/Crosswalk_cl.csv
+3,Crosswalk,PNGRoom,assets/Crosswalk.png,assets/Crosswalk_cl.csv
 4,Fountain,PNGRoom,assets/Fountain.png,assets/Fountain_cl.csv
 5,Flower Garden,PNGRoom,assets/Flower Garden.png,assets/Flower Garden_cl.csv
 6,Dog Park,PNGRoom,assets/Dog Park.png,assets/Dog Park_cl.csv
