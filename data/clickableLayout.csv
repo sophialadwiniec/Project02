@@ -1,2 +1,2 @@
-ID,Name,State,PNGFilename,Text,x,y,visible,color,stroke
-0,Start,Instruction,assets/Start Button.png,,59,393,yes,#00000000,0
+ID,Name,State,PNGFilename,Text,x,y,visible,color,strokeWeight,onHover
+0,Start,Instruction,assets/Start Button.png,,59,393,yes,#000000000,0,assets/Start Button Pressed.png

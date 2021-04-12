@@ -63,9 +63,9 @@ function Clickable() {
 	this.y = 0;			//Y position of the clickable
 	this.width = 100;		//Width of the clickable
 	this.height = 50;		//Height of the clickable
-	this.color = "#00000000";		//Background color of the clickable
+	this.color = "#FFFFFF";		//Background color of the clickable
 	this.cornerRadius = 10;		//Corner radius of the clickable
-	this.strokeWeight = 0;		//Stroke width of the clickable
+	this.strokeWeight = 2;		//Stroke width of the clickable
 	this.stroke = "#000000";	//Border color of the clickable
 	this.text = "Press Me";		//Text of the clickable
 	this.textColor = "#000000";	//Color for the text shown
@@ -78,6 +78,8 @@ function Clickable() {
 	this.tint = null; // tint image using color
 	this.noTint = true; // default to disable tinting
 	this.filter = null; // filter effect
+	this.otherImage = null; 
+	this.originalImage = null; 
 
 	this.updateTextSize = function () {
 		if (this.textScaled) {
@@ -109,7 +111,7 @@ function Clickable() {
 	this.onRelease = function () {
 		//This funcion is ran when the cursor was pressed and then
 		//released inside the clickable. If it was pressed inside and
-		//then released outside this won't work.  
+		//then released outside this won't work.
 	}
 
 	this.locate = function (x, y) {
@@ -160,11 +162,11 @@ function Clickable() {
 		}
 
 		push();
-		// rect(this.x, this.y, this.width, this.height, this.cornerRadius);
-		// fill(this.color);
-		// stroke(this.stroke);
-		// strokeWeight(this.strokeWeight);
-		// fill(this.textColor);
+		fill(this.color);
+		stroke(this.stroke);
+		strokeWeight(this.strokeWeight);
+		rect(this.x, this.y, this.width, this.height, this.cornerRadius);
+		fill(this.textColor);
 		noStroke();
 		if(this.image){
 			this.drawImage();
@@ -206,6 +208,8 @@ class ClickableManager {
 		let hasWidth = this.hasColumnData('width');
 		let hasHeight = this.hasColumnData('height');
 		let hasColor = this.hasColumnData('color');
+		let hasStrokeWeight = this.hasColumnData('strokeWeight'); 
+		let hasOtherImage = this.hasColumnData('onHover'); 
 
 		// For each row, allocate a clickable object
 		for( let i = 0; i < this.allocatorTable.getRowCount(); i++ ) {
@@ -213,7 +217,13 @@ class ClickableManager {
 			
 			// if we have an image, we will call setImage() to load that image into that p5.clickable
 			if( this.allocatorTable.getString(i, 'PNGFilename') != "" ) {
-				this.clickableArray[i].setImage(loadImage(this.allocatorTable.getString(i, 'PNGFilename'))); 
+				this.clickableArray[i].setImage(loadImage(this.allocatorTable.getString(i, 'PNGFilename')));
+				this.clickableArray[i].image =  loadImage(this.allocatorTable.getString(i, 'PNGFilename')); 
+				this.clickableArray[i].originalImage =  loadImage(this.allocatorTable.getString(i, 'PNGFilename')); 
+			}
+
+			if( hasOtherImage ) {
+				this.clickableArray[i].otherImage = loadImage(this.allocatorTable.getString(i, 'onHover')); 
 			}
 
 			// supply the remaining fields from the .csv file
@@ -223,20 +233,20 @@ class ClickableManager {
 			this.clickableArray[i].name = this.allocatorTable.getString(i, 'Name');
 			this.clickableArray[i].x = eval(this.allocatorTable.getString(i, 'x'));
 			this.clickableArray[i].y = eval(this.allocatorTable.getString(i, 'y'));
-			
-			print(this.clickableArray[i].color); 
 			if( hasWidth ) {
 				this.clickableArray[i].width = eval(this.allocatorTable.getString(i, 'width'));	
 			}
 			if( hasHeight ) {
 				this.clickableArray[i].height = eval(this.allocatorTable.getString(i, 'height'));
 			}
-			
 			if( hasColor ) {
 				// expects hex value
-				
 				this.clickableArray[i].color = this.allocatorTable.getString(i, 'color');
-				// print("we got the color"); 
+			}
+
+			if( hasStrokeWeight ) {
+
+				this.clickableArray[i].strokeWeight = eval(this.allocatorTable.getString(i, 'strokeWeight'));
 			}
 
 			this.clickableArray[i].text = this.allocatorTable.getString(i, 'Text')

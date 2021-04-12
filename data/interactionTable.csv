@@ -3,6 +3,7 @@ Start,,,mouseReleased,,,Instruction
 Instruction,,,,Start,,Shelter
 Shelter,,,,,E,Crosswalk 
 Crosswalk ,,,,,W,Shelter
+Crosswalk,,,,,S,Crosswalk 2
 Crosswalk ,,,,,E,Fountain
 Crosswalk,,,,,S,Crosswalk 2
 Fountain,,,,,N,Flower Garden

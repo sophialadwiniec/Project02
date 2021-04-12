@@ -140,15 +140,24 @@ function setupClickables() {
 
 // tint when mouse is over
 clickableButtonHover = function () {
-  this.color = "#AA33AA";
+  this.color = "#00000000";
   this.noTint = false;
-  this.tint = "#FF0000";
+  this.tint = "#00000000";
+  // this.setImage(this.otherImage); 
+  if(this.otherImage != null) {
+    print("SETTING IMAGE"); 
+    // let imageTemp = this.image; 
+    this.setImage(this.otherImage); 
+    // this.otherImage = imageTemp; 
+  }
 }
 
 // color a light gray if off
 clickableButtonOnOutside = function () {
   // backto our gray color
-  this.color = "#AAAAAA";
+  this.color = "#00000000";
+  // print("ON THE OUTSIDE"); 
+  this.setImage(this.originalImage); 
 }
 
 clickableButtonPressed = function() {
