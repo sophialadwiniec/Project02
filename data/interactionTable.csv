@@ -1,20 +1,23 @@
 CurrentState,KeyTyped,KeyCode,MouseEvent,ClickableName,MapDirection,NextState
 Start,,,mouseReleased,,,Instruction
-Instruction,,,mouseReleased,,,Shelter
-Shelter,,,,,E,Crosswalk 1
-Crosswalk 1,,,,,W,Shelter
-Crosswalk 1,,,,,E,Neighborhood
-Neighborhood,,,,,N,Neighborhood 3
-Neighborhood,,,,,W,Crosswalk 1
-Neighborhood,,,,,E,Park
-Neighborhood 3,,,,,S,Neighborhood
-Park,,,,,W,Neighborhood
-Park,,,,,S,Park 2
-Park 2,,,,,N,Park
-Park 2,,,,,S,Lake
-Park 2,,,,,W,Neighborhood 2
-Lake,,,,,N,Park 2
-Neighborhood 2,,,,,E,Park 2
-Neighborhood 2,,,,,W,Crosswalk 2
-Crosswalk 2,,,,,W,Shelter
-Crosswalk 2,,,,,E,Neighborhood 2
+Instruction,,,,Start,,Shelter
+Shelter,,,,,E,Crosswalk 
+Crosswalk ,,,,,W,Shelter
+Crosswalk ,,,,,E,Fountain
+Crosswalk,,,,,S,Crosswalk 2
+Fountain,,,,,N,Flower Garden
+Fountain,,,,,W,Crosswalk
+Fountain,,,,,S,Child Park
+Fountain,,,,,E,Dog Park
+Flower Garden,,,,,S,Fountain
+Dog Park,,,,,W,Fountain
+Dog Park,,,,,S,Park Bench
+Park Bench,,,,,N,Dog Park
+Park Bench,,,,,S,Lake
+Park Bench,,,,,W,Child Park
+Lake,,,,,N,Park Bench
+Child Park,,,,,E,Park Bench
+Child Park,,,,,N,Fountain
+Child Park,,,,,W,Crosswalk 2
+Crosswalk 2,,,,,E,Child Park
+Crosswalk 2,,,,,N,Crosswalk 

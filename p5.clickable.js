@@ -63,9 +63,9 @@ function Clickable() {
 	this.y = 0;			//Y position of the clickable
 	this.width = 100;		//Width of the clickable
 	this.height = 50;		//Height of the clickable
-	this.color = "#FFFFFF";		//Background color of the clickable
+	this.color = "#00000000";		//Background color of the clickable
 	this.cornerRadius = 10;		//Corner radius of the clickable
-	this.strokeWeight = 2;		//Stroke width of the clickable
+	this.strokeWeight = 0;		//Stroke width of the clickable
 	this.stroke = "#000000";	//Border color of the clickable
 	this.text = "Press Me";		//Text of the clickable
 	this.textColor = "#000000";	//Color for the text shown
@@ -109,7 +109,7 @@ function Clickable() {
 	this.onRelease = function () {
 		//This funcion is ran when the cursor was pressed and then
 		//released inside the clickable. If it was pressed inside and
-		//then released outside this won't work.
+		//then released outside this won't work.  
 	}
 
 	this.locate = function (x, y) {
@@ -160,11 +160,11 @@ function Clickable() {
 		}
 
 		push();
-		fill(this.color);
-		stroke(this.stroke);
-		strokeWeight(this.strokeWeight);
-		rect(this.x, this.y, this.width, this.height, this.cornerRadius);
-		fill(this.textColor);
+		// rect(this.x, this.y, this.width, this.height, this.cornerRadius);
+		// fill(this.color);
+		// stroke(this.stroke);
+		// strokeWeight(this.strokeWeight);
+		// fill(this.textColor);
 		noStroke();
 		if(this.image){
 			this.drawImage();
@@ -223,15 +223,20 @@ class ClickableManager {
 			this.clickableArray[i].name = this.allocatorTable.getString(i, 'Name');
 			this.clickableArray[i].x = eval(this.allocatorTable.getString(i, 'x'));
 			this.clickableArray[i].y = eval(this.allocatorTable.getString(i, 'y'));
+			
+			print(this.clickableArray[i].color); 
 			if( hasWidth ) {
 				this.clickableArray[i].width = eval(this.allocatorTable.getString(i, 'width'));	
 			}
 			if( hasHeight ) {
 				this.clickableArray[i].height = eval(this.allocatorTable.getString(i, 'height'));
 			}
+			
 			if( hasColor ) {
 				// expects hex value
+				
 				this.clickableArray[i].color = this.allocatorTable.getString(i, 'color');
+				// print("we got the color"); 
 			}
 
 			this.clickableArray[i].text = this.allocatorTable.getString(i, 'Text')

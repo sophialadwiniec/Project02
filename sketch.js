@@ -169,31 +169,31 @@ class InstructionsScreen extends PNGRoom {
   // preload is where we define OUR variables
   // Best not to use constructor() functions for sublcasses of PNGRoom
   // AdventureManager calls preload() one time, during startup
-  preload() {
+  // preload() {
     // These are out variables in the InstructionsScreen class
-    this.textBoxWidth = (width/6)*4;
-    this.textBoxHeight = (height/6)*4; 
+    // this.textBoxWidth = (width/6)*4;
+    // this.textBoxHeight = (height/6)*4; 
 
-    // hard-coded, but this could be loaded from a file if we wanted to be more elegant
-    this.instructionsText = "You are navigating through the interior space of your moods. There is no goal to this game, but just a chance to explore various things that might be going on in your head. Use the ARROW keys to navigate your avatar around.";
-  }
+    // // hard-coded, but this could be loaded from a file if we wanted to be more elegant
+    // this.instructionsText = "You are navigating through the interior space of your moods. There is no goal to this game, but just a chance to explore various things that might be going on in your head. Use the ARROW keys to navigate your avatar around.";
+  // }
 
   // call the PNGRoom superclass's draw function to draw the background image
   // and draw our instructions on top of this
   draw() {
     // tint down background image so text is more readable
-    tint(128);
+    // tint(128);
       
     // this calls PNGRoom.draw()
     super.draw();
       
     // text draw settings
-    fill(255);
-    textAlign(CENTER);
-    textSize(30);
+    // fill(255);
+    // textAlign(CENTER);
+    // textSize(30);
 
     // Draw text in a box
-    text(this.instructionsText, width/6, height/6, this.textBoxWidth, this.textBoxHeight );
+    // text(this.instructionsText, width/6, height/6, this.textBoxWidth, this.textBoxHeight );
   }
 }
 

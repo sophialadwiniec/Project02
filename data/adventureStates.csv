@@ -1,12 +1,12 @@
 ID,StateName,ClassName,PNGFilename,CollisionFilename
 0,Start,PNGRoom,assets/Start Screen.png,
-1,Instruction,PNGRoom,assets/Instruction Screen.png,
-2,Shelter,PNGRoom,assets/Shelter.png,assets/Shelter_cl.csv
-3,Crosswalk 1,PNGRoom,assets/Crosswalk to Neighborhood.png,assets/Crosswalk to Neighborhood_cl.csv
-4,Neighborhood,PNGRoom,assets/Neighborhood.png,assets/Neighborhood_cl.csv
-5,Neighborhood 3,PNGRoom,assets/Neighborhood Upper.png,
-6,Neighborhood 2,PNGRoom,assets/Neighborhood 2.png,
-7,Park,PNGRoom,assets/Park.png,assets/Park_cl.csv
-8,Park 2,PNGRoom,assets/Park 2.png,assets/Park 2_cl.csv
-9,Lake,PNGRoom,assets/Lake.png,assets/Lake_cl.csv
-10,Crosswalk 2,PNGRoom,assets/Road 2.png,
+1,Instruction,InstructionsScreen,assets/Instruction Screen.png,
+2,Shelter,PNGRoom,assets/Shelter.png,
+3,Crosswalk ,PNGRoom,assets/Crosswalk.png,assets/Crosswalk_cl.csv
+4,Fountain,PNGRoom,assets/Fountain.png,assets/Fountain_cl.csv
+5,Flower Garden,PNGRoom,assets/Flower Garden.png,assets/Flower Garden_cl.csv
+6,Dog Park,PNGRoom,assets/Dog Park.png,assets/Dog Park_cl.csv
+7,Park Bench,PNGRoom,assets/Park Bench.png,assets/Park Bench_cl.csv
+8,Lake,PNGRoom,assets/Lake.png,assets/Lake_cl.csv
+9,Child Park,PNGRoom,assets/Child Park.png,assets/Child Park_cl.csv
+10,Crosswalk 2,PNGRoom,assets/Crosswalk 2.png,assets/Crosswalk 2_cl.csv
