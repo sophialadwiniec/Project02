@@ -18,6 +18,7 @@ var adventureManager;
 var playerSprite;
 var playerAnimation;
 var animalSprite; 
+// var animalSprite2; 
 
 // Clickables: the manager class
 var clickablesManager;    // the manager class
@@ -46,6 +47,7 @@ function preload() {
   chase_image = loadImage('assets/avatars/chase 1.png'); 
   chase_image_2 = loadImage('assets/avatars/chase 2.png'); 
   max_image = loadImage("assets/avatars/max.png"); 
+  turtle_image = loadImage("assets/avatars/turtle.png"); 
 }
 
 // Setup the adventure manager
@@ -63,9 +65,13 @@ function setup() {
   playerSprite.position.y = 680; 
   playerSprite.position.x = 0; 
 
-  animalSprite = createSprite(180,120); 
+  animalSprite = createSprite(180,120,300,300); 
   max_image.resize(180,120); 
   animalSprite.addAnimation("normal", max_image, max_image); 
+
+  // animalSprite2 = createSprite(150,90, 300, 300); 
+  // turtle_image.resize(150,90); 
+  // animalSprite2.addAnimation("normal", turtle_image, turtle_image); 
   // every animation needs a descriptor, since we aren't switching animations, this string value doesn't matter
   chase_image.resize(120,94); 
   chase_image_2.resize(120,94); 
@@ -91,7 +97,7 @@ function setup() {
     adventureManager.states[i].stateName !== "Start" &&
     adventureManager.states[i].stateName !== "Instruction" &&
     adventureManager.states[i].stateName !== "CrossRoads"){
-      adventureManager.addToMap(animalSprite,adventureManager.states[i].stateName); 
+        adventureManager.addToMap(animalSprite,adventureManager.states[i].stateName); 
     }
     // stateName gets the states name 
   }

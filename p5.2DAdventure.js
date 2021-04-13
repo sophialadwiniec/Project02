@@ -431,14 +431,11 @@ class PNGRoom {
         this.loaded = false;
         this.stateName = "";
         this.collisionTableLoaded = false;
+        this.sprite; 
     }
 
     setName(s) {
         this.stateName = s;
-    }
-
-    setup() {
-        
     }
 
     // filepath to PNG is 1st variable
@@ -458,6 +455,12 @@ class PNGRoom {
            PNGRoomPushedThisArray.push(this);
             this.collisionTable = loadTable(_collisionPath, 'csv', 'header', PNGCollisionTableLoaded);
             print("PNGRoom.setup(): loading collisionTable: " + _collisionPath);
+        }
+
+        if (adventureManager.checkMap(this.stateName) !== undefined) {
+            this.sprite = adventureManager.checkMap(this.stateName); 
+            this.sprite.position.x = 300; 
+            this.sprite.position.y = 300;         
         }
     }
     
@@ -494,18 +497,12 @@ class PNGRoom {
         imageMode(CENTER);
         image(this.image,width/2,height/2);
        
-        // drawSprites(adventureManager.checkMap(this.stateName)); 
-        // print("DRAW FOR FUNCTION"); 
-        // print(adventureManager.checkMap(this.stateName)); 
-        if (adventureManager.checkMap(this.stateName) !== undefined) {
-            drawSprites(adventureManager.checkMap(this.stateName)); 
-           
-        }
-
         //imageMode(CORNER);
         //fill(255,0,0);
         // draw rects to see...
-
+        if(adventureManager.checkMap(this.stateName) !== undefined) {
+            drawSprites(this.sprite); 
+        }
         pop(); 
     }
 
