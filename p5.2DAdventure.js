@@ -431,7 +431,6 @@ class PNGRoom {
         this.loaded = false;
         this.stateName = "";
         this.collisionTableLoaded = false;
-        this.sprite; 
     }
 
     setName(s) {
@@ -457,11 +456,6 @@ class PNGRoom {
             print("PNGRoom.setup(): loading collisionTable: " + _collisionPath);
         }
 
-        if (adventureManager.checkMap(this.stateName) !== undefined) {
-            this.sprite = adventureManager.checkMap(this.stateName); 
-            this.sprite.position.x = 300; 
-            this.sprite.position.y = 300;         
-        }
     }
     
     // empty, sublcasses can override
@@ -501,7 +495,10 @@ class PNGRoom {
         //fill(255,0,0);
         // draw rects to see...
         if(adventureManager.checkMap(this.stateName) !== undefined) {
-            drawSprites(this.sprite); 
+            var sprite = adventureManager.checkMap(this.stateName); 
+            drawSprite(sprite); 
+            sprite.position.x = 300; 
+            sprite.position.y = 300; 
         }
         pop(); 
     }
