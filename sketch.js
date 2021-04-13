@@ -17,6 +17,7 @@ var adventureManager;
 // p5.play
 var playerSprite;
 var playerAnimation;
+var animalSprite; 
 
 // Clickables: the manager class
 var clickablesManager;    // the manager class
@@ -28,10 +29,15 @@ const playGameIndex = 0;
 var changeState; 
 // make sure we only play crossy roads once 
 var playGame = true; 
+// variables for crossy roads 
 var cars; 
 var yellowCar; 
 var cars2; 
 var yellowCar2; 
+
+// animal group 
+// want to draw a random animal in a random state 
+// var animalMap = new Map(); 
 
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
@@ -39,12 +45,13 @@ function preload() {
   adventureManager = new AdventureManager('data/adventureStates.csv', 'data/interactionTable.csv', 'data/clickableLayout.csv');
   chase_image = loadImage('assets/avatars/chase 1.png'); 
   chase_image_2 = loadImage('assets/avatars/chase 2.png'); 
+  max_image = loadImage("assets/avatars/max.png"); 
 }
 
 // Setup the adventure manager
 function setup() {
   createCanvas(1280, 720);
-
+  
   // setup the clickables = this will allocate the array
   clickables = clickablesManager.setup();
 
@@ -56,6 +63,9 @@ function setup() {
   playerSprite.position.y = 680; 
   playerSprite.position.x = 0; 
 
+  animalSprite = createSprite(180,120); 
+  max_image.resize(180,120); 
+  animalSprite.addAnimation("normal", max_image, max_image); 
   // every animation needs a descriptor, since we aren't switching animations, this string value doesn't matter
   chase_image.resize(120,94); 
   chase_image_2.resize(120,94); 
@@ -72,6 +82,21 @@ function setup() {
 
     // This will load the images, go through state and interation tables, etc
   adventureManager.setup();
+
+  // var animalMap = new Map([["hello","hi"], ["goodbye","hi"]]); 
+  // print(animalMap.get("hello")); 
+  // print("HERE"); 
+  for(var i = 0; i < adventureManager.states.length; i++) {
+    if (adventureManager.states[i].stateName !== "Challenge One" &&
+    adventureManager.states[i].stateName !== "Start" &&
+    adventureManager.states[i].stateName !== "Instruction" &&
+    adventureManager.states[i].stateName !== "CrossRoads"){
+      adventureManager.addToMap(animalSprite,adventureManager.states[i].stateName); 
+    }
+    // stateName gets the states name 
+  }
+
+  // print(animalMap); 
 
   // call OUR function to setup additional information about the p5.clickables
   // that are not in the array 
@@ -156,13 +181,9 @@ function setupClickables() {
 clickableButtonHover = function () {
   this.color = "#00000000";
   this.noTint = false;
-  this.tint = "#00000000";
-  // this.setImage(this.otherImage); 
+  this.tint = "#00000000"; 
   if(this.otherImage != null) {
-    print("SETTING IMAGE"); 
-    // let imageTemp = this.image; 
     this.setImage(this.otherImage); 
-    // this.otherImage = imageTemp; 
   }
 }
 
@@ -170,7 +191,6 @@ clickableButtonHover = function () {
 clickableButtonOnOutside = function () {
   // backto our gray color
   this.color = "#00000000";
-  // print("ON THE OUTSIDE"); 
   this.setImage(this.originalImage); 
 }
 
@@ -234,9 +254,7 @@ class challengeOne extends PNGRoom {
       changeState = false; 
       yellowCar.resize(70,100);
       yellowCar2.resize(70,100); 
-      // chase_image.resize(75,55); 
-      // chase_image_2.resize(75,55); 
-      
+
       var car = createSprite(290, 800);
       car.addAnimation('normal',yellowCar,yellowCar);  
       cars.add(car); 
@@ -306,12 +324,9 @@ class crosswalk extends PNGRoom {
 
   draw() {
     if(changeState) {
-      // chase_image.resize(158,122); 
-      // chase_image_2.resize(158,122);
       playerSprite.position.y = 300; 
       playerSprite.position.x = 260; 
       changeState = false; 
-
     }
     super.draw(); 
     if(playerSprite.position.x > 300 && playGame) {
@@ -321,5 +336,4 @@ class crosswalk extends PNGRoom {
       adventureManager.changeState("Challenge One"); 
     }
   }
-
 }

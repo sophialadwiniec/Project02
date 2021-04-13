@@ -16,6 +16,7 @@ class AdventureManager {
         this.currentStateName = "";
         this.hasValidStates = false;
         this.states = [];
+        this.animalMap; 
         this.statesTable = loadTable(statesFilename, 'csv', 'header');
         this.interactionTable = loadTable(interactionFilename, 'csv', 'header');
         this.savedPlayerSpritePosition = createVector(width/2, height/2);
@@ -34,6 +35,7 @@ class AdventureManager {
     // expects as .csv file with the format as outlined in the readme file
     setup() {
         let validStateCount = 0;
+        this.animalMap = new Map(); 
         // For each row, allocate a clickable object
         for( let i = 0; i < this.statesTable.getRowCount(); i++ ) {
             let className = this.statesTable.getString(i, 'ClassName');
@@ -43,7 +45,7 @@ class AdventureManager {
                 print("empty className field in line #" + i + " of states file");
                 return false;    
             }
-           
+            // this.states[validStateCount].classString =  this.statesTable.getString(i, 'ClassName');
             // this is the allocator itself
             this.states[validStateCount] = eval("new " + className);
             
@@ -74,6 +76,15 @@ class AdventureManager {
     // accessor for the state name
     getStateName() {
         return this.currentStateName;
+    }
+
+    addToMap(sprite, state) {
+        this.animalMap.set(state, sprite);
+        print(this.animalMap);  
+    }
+
+    checkMap(state) {
+        return this.animalMap.get(state); 
     }
 
     // from the p5.play class
@@ -482,6 +493,14 @@ class PNGRoom {
         push();
         imageMode(CENTER);
         image(this.image,width/2,height/2);
+       
+        // drawSprites(adventureManager.checkMap(this.stateName)); 
+        // print("DRAW FOR FUNCTION"); 
+        // print(adventureManager.checkMap(this.stateName)); 
+        if (adventureManager.checkMap(this.stateName) !== undefined) {
+            drawSprites(adventureManager.checkMap(this.stateName)); 
+           
+        }
 
         //imageMode(CORNER);
         //fill(255,0,0);
