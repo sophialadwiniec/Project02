@@ -26,6 +26,12 @@ var clickables;           // an array of clickable objects
 const playGameIndex = 0;
 
 var changeState; 
+// make sure we only play crossy roads once 
+var playGame = true; 
+var cars; 
+var yellowCar; 
+var cars2; 
+var yellowCar2; 
 
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
@@ -42,12 +48,17 @@ function setup() {
   // setup the clickables = this will allocate the array
   clickables = clickablesManager.setup();
 
+  cars = new Group(); 
+  cars2 = new Group(); 
+
   // create a sprite and add the 3 animations
-  playerSprite = createSprite(158, 122, 80, 80);
+  playerSprite = createSprite(120, 94, 0, 720);
+  playerSprite.position.y = 680; 
+  playerSprite.position.x = 0; 
 
   // every animation needs a descriptor, since we aren't switching animations, this string value doesn't matter
-  chase_image.resize(158,122); 
-  chase_image_2.resize(158,122); 
+  chase_image.resize(120,94); 
+  chase_image_2.resize(120,94); 
   playerSprite.addAnimation('right', chase_image, chase_image);
   playerSprite.addAnimation('left', chase_image_2, chase_image_2);
   
@@ -210,25 +221,103 @@ class InstructionsScreen extends PNGRoom {
 }
 
 class challengeOne extends PNGRoom {
+
+  preload() {
+    yellowCar = loadImage("assets/yellow car.png"); 
+    yellowCar2 = loadImage("assets/yellow car2.png");  
+  }
  
   draw() {
     if(changeState) {
       playerSprite.position.x = 0;
       playerSprite.position.y = 75; 
       changeState = false; 
+      yellowCar.resize(70,100);
+      yellowCar2.resize(70,100); 
+      // chase_image.resize(75,55); 
+      // chase_image_2.resize(75,55); 
+      
+      var car = createSprite(290, 800);
+      car.addAnimation('normal',yellowCar,yellowCar);  
+      cars.add(car); 
+      
+      car = createSprite(700, 800); 
+      car.addAnimation('normal',yellowCar,yellowCar);  
+      cars.add(car);
+
+      car = createSprite(1120, 800); 
+      car.addAnimation('normal',yellowCar,yellowCar);  
+      cars.add(car);
+
+      car = createSprite(160, 0); 
+      car.addAnimation('normal',yellowCar2,yellowCar2); 
+      cars2.add(car); 
+
+      car = createSprite(580, 0); 
+      car.addAnimation('normal',yellowCar2,yellowCar2); 
+      cars2.add(car);
+
+      car = createSprite(980, 0); 
+      car.addAnimation('normal',yellowCar2,yellowCar2); 
+      cars2.add(car);
     }
     
     super.draw(); 
+
+    for(var i = 0; i < cars.length; i++){
+      var sprite = cars[i]; 
+      if(sprite.position.y === 800) {
+        sprite.addSpeed(random(1,6), 270); 
+      }
+  
+      if(sprite.position.y < 0){
+        sprite.position.y = 750; 
+      }
+      if(playerSprite.collide(sprite)) {
+        playerSprite.position.x = 0; 
+      }
+    }
+
+    for(var i = 0; i < cars2.length; i++){
+      var sprite = cars2[i];  
+      if(sprite.position.y === 0) {
+        // print("HEREEEE");
+        sprite.addSpeed(random(3,6), 90); 
+      }
+  
+      if(sprite.position.y > 750){
+        sprite.position.y = 1; 
+      }
+
+      if(playerSprite.collide(sprite)) {
+        playerSprite.position.x = 0; 
+      }
+    }
+    if(playerSprite.position.x > 1240) {
+      adventureManager.changeState("Crosswalk"); 
+      changeState = true; 
+    }
+    drawSprites(cars);
+    drawSprites(cars2);  
   }
 }
 
 class crosswalk extends PNGRoom {
 
   draw() {
+    if(changeState) {
+      // chase_image.resize(158,122); 
+      // chase_image_2.resize(158,122);
+      playerSprite.position.y = 300; 
+      playerSprite.position.x = 260; 
+      changeState = false; 
+
+    }
     super.draw(); 
-    if(playerSprite.position.x > 300) {
+    if(playerSprite.position.x > 300 && playGame) {
       print("Changing State"); 
       changeState = true; 
+      playGame = false; 
       adventureManager.changeState("Challenge One"); 
     }
   }
