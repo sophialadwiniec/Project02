@@ -426,6 +426,10 @@ class PNGRoom {
         this.stateName = s;
     }
 
+    setup() {
+        
+    }
+
     // filepath to PNG is 1st variable
     // file to collision CSV is 2nd variable (may be empty string)
     setup(_imagePath, _collisionPath = "") {

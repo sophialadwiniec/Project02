@@ -25,6 +25,8 @@ var clickables;           // an array of clickable objects
 // indexes into the clickable array (constants)
 const playGameIndex = 0;
 
+var changeState; 
+
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
   clickablesManager = new ClickableManager('data/clickableLayout.csv');
@@ -75,7 +77,8 @@ function draw() {
 
   // No avatar for Splash screen or Instructions screen
   if( adventureManager.getStateName() !== "Start" && 
-      adventureManager.getStateName() !== "Instruction" ) {
+      adventureManager.getStateName() !== "Instruction" && 
+      adventureManager.getStateName() !== "Challenge One") {
       
     // responds to keydowns
     moveSprite();
@@ -206,3 +209,28 @@ class InstructionsScreen extends PNGRoom {
   }
 }
 
+class challengeOne extends PNGRoom {
+ 
+  draw() {
+    if(changeState) {
+      playerSprite.position.x = 0;
+      playerSprite.position.y = 75; 
+      changeState = false; 
+    }
+    
+    super.draw(); 
+  }
+}
+
+class crosswalk extends PNGRoom {
+
+  draw() {
+    super.draw(); 
+    if(playerSprite.position.x > 300) {
+      print("Changing State"); 
+      changeState = true; 
+      adventureManager.changeState("Challenge One"); 
+    }
+  }
+
+}
