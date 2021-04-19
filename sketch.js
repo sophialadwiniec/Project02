@@ -55,6 +55,11 @@ var raindrop;
 var timer;
 var seconds = 0; 
 
+var tb = 0; 
+var tennisBall; 
+var gravity = 1; 
+var jump = 15; 
+
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
   clickablesManager = new ClickableManager('data/clickableLayout.csv');
@@ -71,6 +76,7 @@ function preload() {
   carrot = loadImage("assets/carrot.png");
   yarnball = loadImage("assets/ball of yarn.png"); 
   raindrop = loadImage("assets/raindrop.png"); 
+  tennisBall = loadImage("assets/tennis ball.png"); 
 }
 
 // Setup the adventure manager
@@ -86,6 +92,7 @@ function setup() {
   carrot.resize(35,55);
   yarnball.resize(88,88); 
   raindrop.resize(46,39); 
+  tennisBall.resize(45,45); 
 
   // create a sprite and add the 3 animations
   playerSprite = createSprite(166, 148, 0, 720);
@@ -152,6 +159,8 @@ function setup() {
 
   adventureManager.addToMap(animalSprite5,"Park Bench"); 
   adventureManager.addToCoordinateMap(animalSprite5, 354,533);
+  adventureManager.addToCSMap(animalSprite5, "Challenge Four");
+
   adventureManager.addToMap(animalSprite6,"Child Park"); 
   adventureManager.addToCoordinateMap(animalSprite6, 241,176);
   adventureManager.addToMap(animalSprite7,"Crosswalk 2"); 
@@ -179,7 +188,9 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Two" &&
       adventureManager.getStateName() !== "Operation Carrot" &&
       adventureManager.getStateName() !== "Challenge Three" &&
-      adventureManager.getStateName() !== "Operation Raindrop") {
+      adventureManager.getStateName() !== "Operation Raindrop" &&
+      adventureManager.getStateName() !== "Challenge Four" &&
+      adventureManager.getStateName() !== "Operation Tennis Ball") {
       
     // responds to keydowns
     moveSprite();
@@ -195,7 +206,9 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Two" &&
       adventureManager.getStateName() !== "Operation Carrot" &&
       adventureManager.getStateName() !== "Challenge Three" &&
-      adventureManager.getStateName() !== "Operation Raindrop") {
+      adventureManager.getStateName() !== "Operation Raindrop" &&
+      adventureManager.getStateName() !== "Challenge Four" &&
+      adventureManager.getStateName() !== "Operation Tennis Ball") {
       
     // responds to keydowns
     fill("red");
@@ -275,6 +288,7 @@ function moveKitty() {
   else
     animalSprite3.velocity.x = 0;
 }
+
 //-------------- CLICKABLE CODE  ---------------//
 
 function setupClickables() {
@@ -580,5 +594,76 @@ class operationRaindrop extends PNGRoom {
     this.yarnGroup.draw();
     this.raindropGroup.overlap(animalSprite3, collectRaindrop); 
     this.raindropGroup.draw(); 
+  }
+}
+
+function collectTennisBall(sprite) {
+  sprite.remove(); 
+  tb = tb + 1; 
+}
+
+class operationTennisBall extends PNGRoom {
+
+  preload() {
+
+    this.tennisBalls = new Group(); 
+    seconds = 0; 
+    animalSprite5.position.y = 430;
+    animalSprite5.position.x = 65; 
+    animalSprite5.mirrorX(-1); 
+    
+  }
+
+  draw() {
+    super.draw();  
+    fill("red");
+    textFont(puppyFont);
+    textSize(40);
+    textAlign(CENTER);
+    textStyle(BOLD); 
+    text( "Tennis Balls Collected: " + tb + "/10", width-350, 70);
+
+    animalSprite5.velocity.y += gravity; 
+    animalSprite5.position.x = 160; 
+
+    if(animalSprite5.position.y > 500) {
+      animalSprite5.velocity.y = 0; 
+    }
+    if(keyIsDown(UP_ARROW)) {
+      // print("HERE"); 
+      animalSprite5.velocity.y = -jump; 
+    }
+
+    drawSprite(animalSprite5); 
+
+    updateTimer(); 
+    if(seconds %3 === 0) {
+
+      let randY  = random(30,400);
+     // create the sprite
+      var tennis_ball = createSprite(1290, randY, 45, 45);
+     // add the animation to it (important to load the animation just one time)
+      tennis_ball.addAnimation('regular',  tennisBall, tennisBall);
+     // add to the group
+      this.tennisBalls.add(tennis_ball);
+      seconds+=1; 
+    }
+
+    for(var i = 0; i < this.tennisBalls.length; i++){
+      var sprite = this.tennisBalls[i]; 
+      sprite.velocity.x = -4; 
+  
+      if(sprite.position.x < 0){
+        sprite.remove(); 
+      }
+    }
+
+    if(tb === 10) {
+      adventureManager.changeState("Park Bench"); 
+      challengesCompleted+=1; 
+    }
+  
+    this.tennisBalls.overlap(animalSprite5, collectTennisBall); 
+    this.tennisBalls.draw(); 
   }
 }
