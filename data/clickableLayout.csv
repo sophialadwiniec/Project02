@@ -1,3 +1,4 @@
 ID,Name,State,PNGFilename,Text,x,y,visible,color,strokeWeight,onHover
 0,Start,Instruction,assets/Start Button.png,,59,393,yes,#000000000,0,assets/Start Button Pressed.png
 1,Start2,Challenge One,assets/Start Button.png,,98,451,,#000000000,0,assets/Start Button Pressed.png
+3,Start3,Challenge Two,assets/Start Button.png,,98,451,,#000000001,0,assets/Start Button Pressed.png

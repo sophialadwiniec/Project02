@@ -14,11 +14,16 @@
 // adventure manager global  
 var adventureManager;
 
-// p5.play
+//variables for sprites
 var playerSprite;
 var playerAnimation;
 var animalSprite; 
 var animalSprite2; 
+var animalSprite3; 
+var animalSprite4;
+var animalSprite5; 
+var animalSprite6;
+var animalSprite7;
 
 // Clickables: the manager class
 var clickablesManager;    // the manager class
@@ -36,18 +41,28 @@ var yellowCar;
 var cars2; 
 var yellowCar2; 
 
-// animal group 
-// want to draw a random animal in a random state 
-// var animalMap = new Map(); 
+// variables for puppy font
+var puppyFont = null; 
+
+// variable for challenges completed
+var challengesCompleted = 0; 
+var carrots = 0; 
+var carrot; 
 
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
   clickablesManager = new ClickableManager('data/clickableLayout.csv');
   adventureManager = new AdventureManager('data/adventureStates.csv', 'data/interactionTable.csv', 'data/clickableLayout.csv');
-  chase_image = loadImage('assets/avatars/chase 1.png'); 
-  chase_image_2 = loadImage('assets/avatars/chase 2.png'); 
-  max_image = loadImage("assets/avatars/max.png"); 
+  chase_image = loadImage('assets/avatars/chase.png'); 
+  max_image = loadImage("assets/avatars/golden retriever.png"); 
   turtle_image = loadImage("assets/avatars/turtle.png"); 
+  cat_image = loadImage("assets/avatars/cat.png");
+  bunny_image = loadImage("assets/avatars/bunny.png")
+  buddy_image = loadImage("assets/avatars/dachsund.png");
+  pig_image = loadImage("assets/avatars/pig.png");
+  mouse_image = loadImage("assets/avatars/mouse.png"); 
+  puppyFont = loadFont('fonts/Puppybellies-JyRM.ttf');
+  carrot = loadImage("assets/carrot.png");
 }
 
 // Setup the adventure manager
@@ -60,23 +75,46 @@ function setup() {
   cars = new Group(); 
   cars2 = new Group(); 
 
+  carrot.resize(35,55);
+
   // create a sprite and add the 3 animations
-  playerSprite = createSprite(120, 94, 0, 720);
-  playerSprite.position.y = 680; 
-  playerSprite.position.x = 0; 
+  playerSprite = createSprite(166, 148, 0, 720);
+  playerSprite.position.y = 660; 
+  playerSprite.position.x = 60; 
+  chase_image.resize(166,148);  
+  playerSprite.addAnimation('normal', chase_image, chase_image);
 
-  animalSprite = createSprite(180,120,300,300); 
-  max_image.resize(180,120); 
+  animalSprite = createSprite(266,187,300,300); 
+  max_image.resize(266,187); 
   animalSprite.addAnimation("normal", max_image, max_image); 
-
-  animalSprite2 = createSprite(150,90, 300, 300); 
-  turtle_image.resize(150,90); 
+  
+  animalSprite2 = createSprite(124,84, 300, 300); 
+  turtle_image.resize(124,84); 
   animalSprite2.addAnimation("normal", turtle_image, turtle_image); 
+
+  animalSprite3 = createSprite(113,109, 953, 99); 
+  cat_image.resize(113,109); 
+  animalSprite3.addAnimation("normal", cat_image, cat_image); 
+
+  animalSprite4 = createSprite(108,138, 70, 212); 
+  bunny_image.resize(108,138); 
+  animalSprite4.addAnimation("normal", bunny_image, bunny_image); 
+
+  animalSprite5 = createSprite(289,184, 354, 533); 
+  buddy_image.resize(289,184); 
+  animalSprite5.addAnimation("normal", buddy_image, buddy_image); 
+
+  animalSprite6 = createSprite(111,88, 241, 176); 
+  pig_image.resize(111,88); 
+  animalSprite6.addAnimation("normal", pig_image, pig_image); 
+
+  animalSprite7 = createSprite(106,102, 162, 320); 
+  mouse_image.resize(106,102); 
+  animalSprite7.addAnimation("normal", mouse_image, mouse_image); 
+  
   // every animation needs a descriptor, since we aren't switching animations, this string value doesn't matter
-  chase_image.resize(120,94); 
-  chase_image_2.resize(120,94); 
-  playerSprite.addAnimation('right', chase_image, chase_image);
-  playerSprite.addAnimation('left', chase_image_2, chase_image_2);
+  
+  // playerSprite.addAnimation('left', chase_image_2, chase_image_2);
   
 
   // use this to track movement from toom to room in adventureManager.draw()
@@ -88,25 +126,25 @@ function setup() {
 
     // This will load the images, go through state and interation tables, etc
   adventureManager.setup();
+  // adding to animalMap and CoordinateMap 
+  adventureManager.addToMap(animalSprite,"Dog Park"); 
+  adventureManager.addToCoordinateMap(animalSprite, 730,326); 
+  adventureManager.addToMap(animalSprite2,"Lake"); 
+  adventureManager.addToCoordinateMap(animalSprite2, 596,576); 
 
-  // var animalMap = new Map([["hello","hi"], ["goodbye","hi"]]); 
-  // print(animalMap.get("hello")); 
-  // print("HERE"); 
-  for(var i = 0; i < adventureManager.states.length; i++) {
-    if (adventureManager.states[i].stateName !== "Challenge One" &&
-    adventureManager.states[i].stateName !== "Start" &&
-    adventureManager.states[i].stateName !== "Instruction" &&
-    adventureManager.states[i].stateName !== "CrossRoads" &&
-    adventureManager.states[i].stateName !== "Lake"){
-        adventureManager.addToMap(animalSprite,adventureManager.states[i].stateName); 
-    } 
-    if(adventureManager.states[i].stateName === "Lake") {
-      adventureManager.addToMap(animalSprite2,adventureManager.states[i].stateName); 
-    }
-    // stateName gets the states name 
-  }
+  adventureManager.addToMap(animalSprite3,"Fountain"); 
+  adventureManager.addToCoordinateMap(animalSprite3, 953,99); 
 
-  // print(animalMap); 
+  adventureManager.addToMap(animalSprite4,"Flower Garden"); 
+  adventureManager.addToCoordinateMap(animalSprite4, 70,212); 
+  adventureManager.addToCSMap(animalSprite4, "Challenge Two"); 
+
+  adventureManager.addToMap(animalSprite5,"Park Bench"); 
+  adventureManager.addToCoordinateMap(animalSprite5, 354,533);
+  adventureManager.addToMap(animalSprite6,"Child Park"); 
+  adventureManager.addToCoordinateMap(animalSprite6, 241,176);
+  adventureManager.addToMap(animalSprite7,"Crosswalk 2"); 
+  adventureManager.addToCoordinateMap(animalSprite7, 162,320);
 
   // call OUR function to setup additional information about the p5.clickables
   // that are not in the array 
@@ -124,13 +162,35 @@ function draw() {
   // No avatar for Splash screen or Instructions screen
   if( adventureManager.getStateName() !== "Start" && 
       adventureManager.getStateName() !== "Instruction" && 
-      adventureManager.getStateName() !== "Challenge One") {
+      adventureManager.getStateName() !== "Challenge One" &&
+      adventureManager.getStateName() !== "Challenge Two" &&
+      adventureManager.getStateName() !== "Operation Carrot") {
       
     // responds to keydowns
     moveSprite();
 
     // this is a function of p5.js, not of this sketch
     drawSprite(playerSprite);
+  } 
+
+   if( adventureManager.getStateName() !== "Start" && 
+      adventureManager.getStateName() !== "Instruction" && 
+      adventureManager.getStateName() !== "Challenge One" &&
+      adventureManager.getStateName() !== "CrossRoads" &&
+      adventureManager.getStateName() !== "Challenge Two" &&
+      adventureManager.getStateName() !== "Operation Carrot") {
+      
+    // responds to keydowns
+    fill("red");
+    textFont(puppyFont);
+    textSize(40);
+    textAlign(LEFT);
+    textStyle(BOLD); 
+    text( "Animals Collected: " + adventureManager.getCollected() + "/7", width-350, 70);
+    textAlign(RIGHT);
+    text( "Challenges Completed: " + challengesCompleted + "/5", width-850, 70 );
+
+    // this is a function of p5.js, not of this sketch
   } 
 }
 
@@ -159,11 +219,13 @@ function mouseReleased() {
 function moveSprite() {
   if(keyIsDown(RIGHT_ARROW)) {
     playerSprite.velocity.x = 10;
-    playerSprite.changeAnimation('right');
+    playerSprite.mirrorX(1); 
+    // playerSprite.changeAnimation('right');
   }
   else if(keyIsDown(LEFT_ARROW)){
-    playerSprite.changeAnimation('left'); 
+    // playerSprite.changeAnimation('left'); 
     playerSprite.velocity.x = -10;
+    playerSprite.mirrorX(-1); 
   }
   else
     playerSprite.velocity.x = 0;
@@ -176,6 +238,11 @@ function moveSprite() {
     playerSprite.velocity.y = 0;
 }
 
+function moveBunny() {
+  animalSprite4.velocity.x = (mouseX - animalSprite4.position.x)/10; 
+  animalSprite4.velocity.y = (mouseY - animalSprite4.position.y)/10; 
+  //print("this is being called :)"); 
+}
 //-------------- CLICKABLE CODE  ---------------//
 
 function setupClickables() {
@@ -255,12 +322,15 @@ class challengeOne extends PNGRoom {
   preload() {
     yellowCar = loadImage("assets/yellow car.png"); 
     yellowCar2 = loadImage("assets/yellow car2.png");  
+   
   }
  
   draw() {
+
     if(changeState) {
       playerSprite.position.x = 0;
       playerSprite.position.y = 75; 
+
       changeState = false; 
       yellowCar.resize(70,100);
       yellowCar2.resize(70,100); 
@@ -309,7 +379,6 @@ class challengeOne extends PNGRoom {
     for(var i = 0; i < cars2.length; i++){
       var sprite = cars2[i];  
       if(sprite.position.y === 0) {
-        // print("HEREEEE");
         sprite.addSpeed(random(3,6), 90); 
       }
   
@@ -322,6 +391,7 @@ class challengeOne extends PNGRoom {
       }
     }
     if(playerSprite.position.x > 1240) {
+      challengesCompleted+=1; 
       adventureManager.changeState("Crosswalk"); 
       changeState = true; 
     }
@@ -339,11 +409,83 @@ class crosswalk extends PNGRoom {
       changeState = false; 
     }
     super.draw(); 
-    if(playerSprite.position.x > 300 && playGame) {
+    
+    if(playerSprite.position.x > 300 && playGame === false) {
       print("Changing State"); 
       changeState = true; 
       playGame = false; 
       adventureManager.changeState("Challenge One"); 
     }
+  }
+}
+function collect(sprite) {
+  sprite.remove(); 
+  carrots = carrots + 1; 
+}
+class operationCarrot extends PNGRoom {
+
+  preload() {
+    // load the animation just one time
+    // this.NPCAnimation = createSprite(28,44, 300, 300);
+    //this.NPCAnimation.addAnimation("normal", carrot, carrot);
+   // this is a type from p5play, so we can do operations on all sprites
+   // at once
+    this.NPCgroup = new Group;
+
+   // change this number for more or less
+    this.numNPCs = 100;
+
+   // is an array of sprites, note we keep this array because
+   // later I will add movement to all of them
+    this.NPCSprites = [];
+
+   // this will place them randomly in the room
+    for( let i = 0; i < this.numNPCs; i++ ) {
+     // random x and random y poisiton for each sprite
+      let randX  = random(100, width-100);
+      let randY = random(100, height-100);
+
+     // create the sprite
+      this.NPCSprites[i] = createSprite( randX, randY,17, 28);
+   
+     // add the animation to it (important to load the animation just one time)
+      this.NPCSprites[i].addAnimation('regular',  carrot, carrot);
+
+     // add to the group
+      this.NPCgroup.add(this.NPCSprites[i]);
+   }
+
+   print(this.NPCgroup); 
+ }
+
+
+  draw() {
+    super.draw(); 
+    drawSprite(animalSprite4); 
+    moveBunny(); 
+
+    fill("red");
+    textFont(puppyFont);
+    textSize(40);
+    textAlign(CENTER);
+    textStyle(BOLD); 
+    text( "Carrots Collected: " + carrots + "/100", width-350, 70);
+
+    this.NPCgroup.draw();
+
+    // checks for overlap with ANY sprite in the group, if this happens
+    // our die() function gets called
+    this.NPCgroup.overlap(animalSprite4, collect);
+
+    for( let i = 0; i < this.NPCSprites.length; i++ ) {
+      // this.NPCSprites[i].velocity.x = random(-3,1);
+      this.NPCSprites[i].velocity.y = random(-2,2);
+    }
+
+    if(carrots === 100) {
+      adventureManager.changeState("Flower Garden"); 
+      challengesCompleted+=1; 
+    }
+    
   }
 }

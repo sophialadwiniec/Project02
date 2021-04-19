@@ -16,7 +16,15 @@ class AdventureManager {
         this.currentStateName = "";
         this.hasValidStates = false;
         this.states = [];
+        //animal hashmap which contains the animal and the state they are put in 
         this.animalMap; 
+        //coordinate map
+        this.coordinateMap; 
+        this.collected = 0; 
+
+        //changeState hashmap which contains the animal as the key and the next state when collected as the value 
+        this.changeStates; 
+
         this.statesTable = loadTable(statesFilename, 'csv', 'header');
         this.interactionTable = loadTable(interactionFilename, 'csv', 'header');
         this.savedPlayerSpritePosition = createVector(width/2, height/2);
@@ -36,6 +44,8 @@ class AdventureManager {
     setup() {
         let validStateCount = 0;
         this.animalMap = new Map(); 
+        this.coordinateMap = new Map(); 
+        this.changeStates = new Map(); 
         // For each row, allocate a clickable object
         for( let i = 0; i < this.statesTable.getRowCount(); i++ ) {
             let className = this.statesTable.getString(i, 'ClassName');
@@ -80,12 +90,46 @@ class AdventureManager {
 
     addToMap(sprite, state) {
         this.animalMap.set(state, sprite);
-        print(this.animalMap);  
+        // print(this.animalMap);  
+    }
+
+    addToCoordinateMap(sprite, x, y) {
+        this.coordinateMap.set(sprite, [x,y]); 
+    }
+
+    addToCSMap(sprite, state) {
+        this.changeStates.set(sprite, state); 
+    }
+
+    checkCSMap(sprite) {
+        return this.changeStates.get(sprite); 
     }
 
     checkMap(state) {
         return this.animalMap.get(state); 
     }
+
+    checkCoordinateMap(sprite) {
+        return this.coordinateMap.get(sprite); 
+    }
+
+    changeCollected() {
+        this.collected= this.collected + 1; 
+    }
+
+    getCollected() {
+        return this.collected; 
+    }
+
+    getPlayerSprite() {
+        return this.playerSprite; 
+    }
+
+    removeSprite(sprite) {
+        this.animalMap.delete(sprite); 
+        print(this.animalMap.get(sprite)); 
+    }
+
 
     // from the p5.play class
     setPlayerSprite(s) {
@@ -495,13 +539,32 @@ class PNGRoom {
         //fill(255,0,0);
         // draw rects to see...
         if(adventureManager.checkMap(this.stateName) !== undefined) {
-            var sprite = adventureManager.checkMap(this.stateName); 
+            var sprite = adventureManager.checkMap(this.stateName);  
             drawSprite(sprite); 
-            sprite.position.x = 300; 
-            sprite.position.y = 300; 
+            var coordinates = adventureManager.checkCoordinateMap(sprite); 
+            sprite.position.x = coordinates[0]; 
+            sprite.position.y = coordinates[1]; 
+
+            if(adventureManager.getPlayerSprite().collide(sprite)) {
+                // sprite.remove(); 
+                adventureManager.removeSprite(this.stateName); 
+                adventureManager.changeCollected(); 
+                if(adventureManager.checkCSMap(sprite) !== undefined) {
+                    adventureManager.changeState(adventureManager.checkCSMap(sprite)); 
+                }
+            }
         }
+
+
+
+
         pop(); 
     }
+
+    // changeSpriteCoordinates(x, y) {
+    //     this.sprite.postion.x = x; 
+    //     this.sprite.position.y = y; 
+    // }
 
     // Go through our array and ook to see if we are in bounds anywhere
     checkForCollision(ps) {
