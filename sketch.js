@@ -48,6 +48,12 @@ var puppyFont = null;
 var challengesCompleted = 0; 
 var carrots = 0; 
 var carrot; 
+var yarn = 0; 
+var yarnball; 
+var raindrop; 
+
+var timer;
+var seconds = 0; 
 
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
@@ -63,6 +69,8 @@ function preload() {
   mouse_image = loadImage("assets/avatars/mouse.png"); 
   puppyFont = loadFont('fonts/Puppybellies-JyRM.ttf');
   carrot = loadImage("assets/carrot.png");
+  yarnball = loadImage("assets/ball of yarn.png"); 
+  raindrop = loadImage("assets/raindrop.png"); 
 }
 
 // Setup the adventure manager
@@ -76,6 +84,8 @@ function setup() {
   cars2 = new Group(); 
 
   carrot.resize(35,55);
+  yarnball.resize(88,88); 
+  raindrop.resize(46,39); 
 
   // create a sprite and add the 3 animations
   playerSprite = createSprite(166, 148, 0, 720);
@@ -134,6 +144,7 @@ function setup() {
 
   adventureManager.addToMap(animalSprite3,"Fountain"); 
   adventureManager.addToCoordinateMap(animalSprite3, 953,99); 
+  adventureManager.addToCSMap(animalSprite3, "Challenge Three");
 
   adventureManager.addToMap(animalSprite4,"Flower Garden"); 
   adventureManager.addToCoordinateMap(animalSprite4, 70,212); 
@@ -145,6 +156,8 @@ function setup() {
   adventureManager.addToCoordinateMap(animalSprite6, 241,176);
   adventureManager.addToMap(animalSprite7,"Crosswalk 2"); 
   adventureManager.addToCoordinateMap(animalSprite7, 162,320);
+
+  timer = new Timer(1000); 
 
   // call OUR function to setup additional information about the p5.clickables
   // that are not in the array 
@@ -164,7 +177,9 @@ function draw() {
       adventureManager.getStateName() !== "Instruction" && 
       adventureManager.getStateName() !== "Challenge One" &&
       adventureManager.getStateName() !== "Challenge Two" &&
-      adventureManager.getStateName() !== "Operation Carrot") {
+      adventureManager.getStateName() !== "Operation Carrot" &&
+      adventureManager.getStateName() !== "Challenge Three" &&
+      adventureManager.getStateName() !== "Operation Raindrop") {
       
     // responds to keydowns
     moveSprite();
@@ -178,7 +193,9 @@ function draw() {
       adventureManager.getStateName() !== "Challenge One" &&
       adventureManager.getStateName() !== "CrossRoads" &&
       adventureManager.getStateName() !== "Challenge Two" &&
-      adventureManager.getStateName() !== "Operation Carrot") {
+      adventureManager.getStateName() !== "Operation Carrot" &&
+      adventureManager.getStateName() !== "Challenge Three" &&
+      adventureManager.getStateName() !== "Operation Raindrop") {
       
     // responds to keydowns
     fill("red");
@@ -243,6 +260,21 @@ function moveBunny() {
   animalSprite4.velocity.y = (mouseY - animalSprite4.position.y)/10; 
   //print("this is being called :)"); 
 }
+
+function moveKitty() {
+  if(keyIsDown(RIGHT_ARROW)) {
+    animalSprite3.velocity.x = 10;
+    animalSprite3.mirrorX(-1); 
+    // playerSprite.changeAnimation('right');
+  }
+  else if(keyIsDown(LEFT_ARROW)){
+    // playerSprite.changeAnimation('left'); 
+    animalSprite3.velocity.x = -10;
+    animalSprite3.mirrorX(1); 
+  }
+  else
+    animalSprite3.velocity.x = 0;
+}
 //-------------- CLICKABLE CODE  ---------------//
 
 function setupClickables() {
@@ -280,42 +312,6 @@ clickableButtonPressed = function() {
 
 
 //-------------- SUBCLASSES / YOUR DRAW CODE CAN GO HERE ---------------//
-
-
-// Instructions screen has a backgrounnd image, loaded from the adventureStates table
-// It is sublcassed from PNGRoom, which means all the loading, unloading and drawing of that
-// class can be used. We call super() to call the super class's function as needed
-class InstructionsScreen extends PNGRoom {
-  // preload is where we define OUR variables
-  // Best not to use constructor() functions for sublcasses of PNGRoom
-  // AdventureManager calls preload() one time, during startup
-  // preload() {
-    // These are out variables in the InstructionsScreen class
-    // this.textBoxWidth = (width/6)*4;
-    // this.textBoxHeight = (height/6)*4; 
-
-    // // hard-coded, but this could be loaded from a file if we wanted to be more elegant
-    // this.instructionsText = "You are navigating through the interior space of your moods. There is no goal to this game, but just a chance to explore various things that might be going on in your head. Use the ARROW keys to navigate your avatar around.";
-  // }
-
-  // call the PNGRoom superclass's draw function to draw the background image
-  // and draw our instructions on top of this
-  draw() {
-    // tint down background image so text is more readable
-    // tint(128);
-      
-    // this calls PNGRoom.draw()
-    super.draw();
-      
-    // text draw settings
-    // fill(255);
-    // textAlign(CENTER);
-    // textSize(30);
-
-    // Draw text in a box
-    // text(this.instructionsText, width/6, height/6, this.textBoxWidth, this.textBoxHeight );
-  }
-}
 
 class challengeOne extends PNGRoom {
 
@@ -418,10 +414,13 @@ class crosswalk extends PNGRoom {
     }
   }
 }
+
+
 function collect(sprite) {
   sprite.remove(); 
   carrots = carrots + 1; 
 }
+
 class operationCarrot extends PNGRoom {
 
   preload() {
@@ -487,5 +486,99 @@ class operationCarrot extends PNGRoom {
       challengesCompleted+=1; 
     }
     
+  }
+}
+
+function updateTimer() {
+  if(timer.expired()) {
+    seconds+=1; 
+    timer.start(); 
+  }
+}
+
+function collectYarn(sprite) {
+  sprite.remove(); 
+  yarn = yarn + 1; 
+}
+
+function collectRaindrop(sprite) {
+  sprite.remove(); 
+  yarn = yarn - 1; 
+}
+
+class operationRaindrop extends PNGRoom {
+
+  preload() {
+
+    this.yarnGroup = new Group(); 
+    this.raindropGroup = new Group(); 
+    seconds = 0; 
+    
+  }
+
+  draw() {
+    super.draw();  
+    fill("red");
+    textFont(puppyFont);
+    textSize(40);
+    textAlign(CENTER);
+    textStyle(BOLD); 
+    text( "Yarn Collected: " + yarn + "/10", width-350, 70);
+
+   
+    drawSprite(animalSprite3); 
+    animalSprite3.position.y = 579;
+    moveKitty(); 
+    updateTimer(); 
+    if(seconds %3 === 0) {
+
+      let randX  = random(50, width-50);
+     // create the sprite
+      var yarn_ball = createSprite( randX, 0, 88, 88);
+     // add the animation to it (important to load the animation just one time)
+      yarn_ball.addAnimation('regular',  yarnball, yarnball);
+     // add to the group
+      this.yarnGroup.add(yarn_ball);
+      seconds+=1; 
+    }
+
+    if(seconds %2 === 0) {
+
+      let randX  = random(50, width-50);
+     // create the sprite
+      var rain_drop = createSprite( randX, 0, 46, 39);
+     // add the animation to it (important to load the animation just one time)
+      rain_drop.addAnimation('regular',  raindrop, raindrop);
+     // add to the group
+      this.raindropGroup.add(rain_drop);
+      seconds+=1; 
+    }
+
+    for(var i = 0; i < this.raindropGroup.length; i++){
+      var sprite = this.raindropGroup[i]; 
+      sprite.velocity.y = 2; 
+  
+      if(sprite.position.y > height + 100){
+        sprite.remove(); 
+      }
+    }
+
+    for(var i = 0; i < this.yarnGroup.length; i++){
+      var sprite = this.yarnGroup[i]; 
+      sprite.velocity.y = 2; 
+  
+      if(sprite.position.y > height + 100){
+        sprite.remove(); 
+      }
+    }
+
+    if(yarn === 10) {
+      adventureManager.changeState("Fountain"); 
+      challengesCompleted+=1; 
+    }
+    this.yarnGroup.overlap(animalSprite3, collectYarn);
+    this.yarnGroup.draw();
+    this.raindropGroup.overlap(animalSprite3, collectRaindrop); 
+    this.raindropGroup.draw(); 
   }
 }

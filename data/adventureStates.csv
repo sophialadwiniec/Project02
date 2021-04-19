@@ -14,3 +14,5 @@ ID,StateName,ClassName,PNGFilename,CollisionFilename
 12,CrossRoads,challengeOne,assets/CrossRoads.png,
 13,Challenge Two,PNGRoom,assets/Challenge Two.png,
 14,Operation Carrot,operationCarrot,assets/Operation Carrot.png,
+15,Challenge Three,PNGRoom,assets/Challenge Three.png,
+16,Operation Raindrop,operationRaindrop,assets/Operation Raindrop.png,
