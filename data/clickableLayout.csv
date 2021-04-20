@@ -1,6 +1,7 @@
 ID,Name,State,PNGFilename,Text,x,y,visible,color,strokeWeight,onHover
 0,Start,Instruction,assets/Start Button.png,,59,393,yes,#000000000,0,assets/Start Button Pressed.png
-1,Start2,Challenge One,assets/Start Button.png,,98,451,,#000000000,0,assets/Start Button Pressed.png
-2,Start3,Challenge Two,assets/Start Button.png,,98,451,,#000000000,0,assets/Start Button Pressed.png
-3,Start4,Challenge Three,assets/Start Button.png,,98,451,,#000000000,0,assets/Start Button Pressed.png
-4,Start5,Challenge Four,assets/Start Button.png,,98,451,,#000000000,0,assets/Start Button Pressed.png
+1,Start2,Challenge One,assets/Start Button.png,,464,442,,#000000000,0,assets/Start Button Pressed.png
+2,Start3,Challenge Two,assets/Start Button.png,,464,442,,#000000000,0,assets/Start Button Pressed.png
+3,Start4,Challenge Three,assets/Start Button.png,,464,442,,#000000000,0,assets/Start Button Pressed.png
+4,Start5,Challenge Four,assets/Start Button.png,,464,442,,#000000000,0,assets/Start Button Pressed.png
+5,Start6,Challenge Five,assets/Start Button.png,,464,442,,#000000000,0,assets/Start Button Pressed.png

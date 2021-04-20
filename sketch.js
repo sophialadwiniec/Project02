@@ -59,6 +59,8 @@ var tb = 0;
 var tennisBall; 
 var gravity = 1; 
 var jump = 15; 
+var cheese = 0; 
+var cheese_image; 
 
 // Allocate Adventure Manager with states table and interaction tables
 function preload() {
@@ -77,6 +79,7 @@ function preload() {
   yarnball = loadImage("assets/ball of yarn.png"); 
   raindrop = loadImage("assets/raindrop.png"); 
   tennisBall = loadImage("assets/tennis ball.png"); 
+  cheese_image = loadImage("assets/cheese.png"); 
 }
 
 // Setup the adventure manager
@@ -93,6 +96,7 @@ function setup() {
   yarnball.resize(88,88); 
   raindrop.resize(46,39); 
   tennisBall.resize(45,45); 
+  cheese_image.resize(55,44); 
 
   // create a sprite and add the 3 animations
   playerSprite = createSprite(166, 148, 0, 720);
@@ -163,8 +167,10 @@ function setup() {
 
   adventureManager.addToMap(animalSprite6,"Child Park"); 
   adventureManager.addToCoordinateMap(animalSprite6, 241,176);
+  
   adventureManager.addToMap(animalSprite7,"Crosswalk 2"); 
   adventureManager.addToCoordinateMap(animalSprite7, 162,320);
+  adventureManager.addToCSMap(animalSprite7, "Challenge Five");
 
   timer = new Timer(1000); 
 
@@ -190,7 +196,9 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Three" &&
       adventureManager.getStateName() !== "Operation Raindrop" &&
       adventureManager.getStateName() !== "Challenge Four" &&
-      adventureManager.getStateName() !== "Operation Tennis Ball") {
+      adventureManager.getStateName() !== "Operation Tennis Ball" &&
+      adventureManager.getStateName() !== "Challenge Five" &&
+      adventureManager.getStateName() !== "Operation Cheese Maze") {
       
     // responds to keydowns
     moveSprite();
@@ -198,6 +206,11 @@ function draw() {
     // this is a function of p5.js, not of this sketch
     drawSprite(playerSprite);
   } 
+
+  if(adventureManager.getStateName() === "Challenge Five") {
+    animalSprite7.position.x = 751; 
+    animalSprite7.position.y = 642; 
+  }
 
    if( adventureManager.getStateName() !== "Start" && 
       adventureManager.getStateName() !== "Instruction" && 
@@ -208,7 +221,9 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Three" &&
       adventureManager.getStateName() !== "Operation Raindrop" &&
       adventureManager.getStateName() !== "Challenge Four" &&
-      adventureManager.getStateName() !== "Operation Tennis Ball") {
+      adventureManager.getStateName() !== "Operation Tennis Ball" &&
+      adventureManager.getStateName() !== "Challenge Five" &&
+      adventureManager.getStateName() !== "Operation Cheese Maze") {
       
     // responds to keydowns
     fill("red");
@@ -268,10 +283,31 @@ function moveSprite() {
     playerSprite.velocity.y = 0;
 }
 
+function moveMouse() {
+  if(keyIsDown(RIGHT_ARROW)) {
+    animalSprite7.velocity.x = 10;
+    animalSprite7.mirrorX(-1); 
+    // playerSprite.changeAnimation('right');
+  }
+  else if(keyIsDown(LEFT_ARROW)){
+    // playerSprite.changeAnimation('left'); 
+    animalSprite7.velocity.x = -10;
+    animalSprite7.mirrorX(1); 
+  }
+  else
+    animalSprite7.velocity.x = 0;
+
+  if(keyIsDown(DOWN_ARROW))
+    animalSprite7.velocity.y = 10;
+  else if(keyIsDown(UP_ARROW))
+    animalSprite7.velocity.y = -10;
+  else
+    animalSprite7.velocity.y = 0;
+}
+
 function moveBunny() {
   animalSprite4.velocity.x = (mouseX - animalSprite4.position.x)/10; 
   animalSprite4.velocity.y = (mouseY - animalSprite4.position.y)/10; 
-  //print("this is being called :)"); 
 }
 
 function moveKitty() {
@@ -420,7 +456,7 @@ class crosswalk extends PNGRoom {
     }
     super.draw(); 
     
-    if(playerSprite.position.x > 300 && playGame === false) {
+    if(playerSprite.position.x > 300 && playGame) {
       print("Changing State"); 
       changeState = true; 
       playGame = false; 
@@ -665,5 +701,60 @@ class operationTennisBall extends PNGRoom {
   
     this.tennisBalls.overlap(animalSprite5, collectTennisBall); 
     this.tennisBalls.draw(); 
+  }
+}
+
+function collectCheese(sprite) {
+  sprite.remove(); 
+  cheese = cheese + 1; 
+}
+
+class operationCheeseMaze extends PNGRoom {
+  preload() {
+    this.cheeses = new Group(); 
+
+    
+    var cheese_sprite = createSprite(1106, 590, 55, 44);
+    cheese_sprite.addAnimation('regular',  cheese_image, cheese_image);
+    this.cheeses.add(cheese_sprite); 
+    
+    var cheese_sprite2 = createSprite(1156, 62, 55, 44); 
+    cheese_sprite2.addAnimation('regular',  cheese_image, cheese_image);
+    this.cheeses.add(cheese_sprite2); 
+    
+    var cheese_sprite3 = createSprite(391, 377, 55, 44); 
+    cheese_sprite3.addAnimation('regular',   cheese_image, cheese_image);
+    this.cheeses.add(cheese_sprite3); 
+    
+    var cheese_sprite4 = createSprite(81, 615, 55, 44); 
+    cheese_sprite4.addAnimation('regular',  cheese_image, cheese_image);
+    this.cheeses.add(cheese_sprite4); 
+
+     // add the animation to it (important to load the animation just one time)
+    //   tennis_ball.addAnimation('regular',  tennisBall, tennisBall);
+    //  // add to the group
+    //   this.tennisBalls.add(tennis_ball);
+    // }
+  }
+
+  draw() {
+    super.draw(); 
+    fill("red");
+    textFont(puppyFont);
+    textSize(40);
+    textAlign(CENTER);
+    textStyle(BOLD);
+
+    text( "Cheese Collected: " + cheese + "/4", width-350, 70);
+    mouse_image.resize(45,44); 
+    drawSprite(animalSprite7);
+    moveMouse();  
+    this.cheeses.draw(); 
+    this.cheeses.overlap(animalSprite7, collectCheese);
+
+    if(cheese === 4) {
+      adventureManager.changeState("Crosswalk 2"); 
+      challengesCompleted+=1; 
+    }
   }
 }
