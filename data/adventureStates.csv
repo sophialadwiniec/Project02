@@ -19,4 +19,5 @@ ID,StateName,ClassName,PNGFilename,CollisionFilename
 17,Challenge Four,PNGRoom,assets/Challenge Four.png,
 18,Operation Tennis Ball,operationTennisBall,assets/Operation Tennis Ball.png,
 19,Challenge Five,PNGRoom,assets/Challenge Five.png,
-20,Operation Cheese Maze,operationCheeseMaze,assets/Operation Cheese Maze.png,
+20,Operation Cheese Maze,operationCheeseMaze,assets/Operation Cheese Maze.png,assets/Operation Cheese Maze_cl.csv
+21,Win,PNGRoom,assets/Win.png,

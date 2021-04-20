@@ -28,6 +28,7 @@ class AdventureManager {
         this.statesTable = loadTable(statesFilename, 'csv', 'header');
         this.interactionTable = loadTable(interactionFilename, 'csv', 'header');
         this.savedPlayerSpritePosition = createVector(width/2, height/2);
+        this.otherPlayerSpritePosition = createVector(width/2, height/2);
 
         if( clickableLayoutFilename === null ) {
             this.clickableTable = null;
@@ -38,6 +39,7 @@ class AdventureManager {
 
         this.playerSprite = null;
         this.clickableArray = null;
+        this.otherPlayerSprite = null; 
     }
 
     // expects as .csv file with the format as outlined in the readme file
@@ -136,6 +138,10 @@ class AdventureManager {
         this.playerSprite = s;
     }
 
+    setOtherPlayerSprite(s) {
+        this.otherPlayerSprite = s; 
+    }
+
     // clickable manager for turning visibility on/off for buttons based on their states
     setClickableManager(cm) {
         this.clickableArray = cm.getClickableArray();
@@ -160,6 +166,18 @@ class AdventureManager {
                 this.savedPlayerSpritePosition.x = this.playerSprite.position.x;
                 this.savedPlayerSpritePosition.y = this.playerSprite.position.y;
             }
+
+            if( this.states[this.currentState].checkForCollision(this.otherPlayerSprite) === true ) {
+                // set to last good position
+                this.otherPlayerSprite.position.x = this.otherPlayerSpritePosition.x;
+                this.otherPlayerSprite.position.y = this.otherPlayerSpritePosition.y;
+            }
+            else {
+                // save the last poisition for checkCollision in the future
+                this.otherPlayerSpritePosition.x = 750;
+                this.otherPlayerSpritePosition.y = 640;
+            }
+
 
             background(this.backgroundColor);
             this.states[this.currentState].draw();

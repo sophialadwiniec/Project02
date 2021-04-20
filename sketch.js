@@ -92,11 +92,11 @@ function setup() {
   cars = new Group(); 
   cars2 = new Group(); 
 
-  carrot.resize(35,55);
-  yarnball.resize(88,88); 
-  raindrop.resize(46,39); 
-  tennisBall.resize(45,45); 
-  cheese_image.resize(55,44); 
+  carrot.resize(120,143);
+  yarnball.resize(74,64); 
+  raindrop.resize(62,53); 
+  tennisBall.resize(84,74); 
+  cheese_image.resize(100,92); 
 
   // create a sprite and add the 3 animations
   playerSprite = createSprite(166, 148, 0, 720);
@@ -135,11 +135,11 @@ function setup() {
   
   // every animation needs a descriptor, since we aren't switching animations, this string value doesn't matter
   
-  // playerSprite.addAnimation('left', chase_image_2, chase_image_2);
   
 
   // use this to track movement from toom to room in adventureManager.draw()
   adventureManager.setPlayerSprite(playerSprite);
+  adventureManager.setOtherPlayerSprite(animalSprite7);
 
   // this is optional but will manage turning visibility of buttons on/off
   // based on the state name in the clickableLayout
@@ -198,7 +198,8 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Four" &&
       adventureManager.getStateName() !== "Operation Tennis Ball" &&
       adventureManager.getStateName() !== "Challenge Five" &&
-      adventureManager.getStateName() !== "Operation Cheese Maze") {
+      adventureManager.getStateName() !== "Operation Cheese Maze" &&
+      adventureManager.getStateName() !== "Win") {
       
     // responds to keydowns
     moveSprite();
@@ -223,20 +224,32 @@ function draw() {
       adventureManager.getStateName() !== "Challenge Four" &&
       adventureManager.getStateName() !== "Operation Tennis Ball" &&
       adventureManager.getStateName() !== "Challenge Five" &&
-      adventureManager.getStateName() !== "Operation Cheese Maze") {
+      adventureManager.getStateName() !== "Operation Cheese Maze" &&
+      adventureManager.getStateName() !== "Win") {
       
     // responds to keydowns
-    fill("red");
+    
     textFont(puppyFont);
     textSize(40);
+    // strokeWeight(10); 
     textAlign(LEFT);
     textStyle(BOLD); 
+    fill("black"); 
+    rect(width-360, 40, 350, 40);
+    fill("red");
     text( "Animals Collected: " + adventureManager.getCollected() + "/7", width-350, 70);
     textAlign(RIGHT);
+    fill("black"); 
+    rect(width-1260, 40, 420, 40);
+    fill("red");
     text( "Challenges Completed: " + challengesCompleted + "/5", width-850, 70 );
 
     // this is a function of p5.js, not of this sketch
   } 
+
+  if(adventureManager.getCollected() === 7 && challengesCompleted === 5) {
+    adventureManager.changeState("Win"); 
+  }
 }
 
 // pass to adventure manager, this do the draw / undraw events
@@ -495,7 +508,7 @@ class operationCarrot extends PNGRoom {
       let randY = random(100, height-100);
 
      // create the sprite
-      this.NPCSprites[i] = createSprite( randX, randY,17, 28);
+      this.NPCSprites[i] = createSprite( randX, randY,120,143);
    
      // add the animation to it (important to load the animation just one time)
       this.NPCSprites[i].addAnimation('regular',  carrot, carrot);
@@ -512,7 +525,8 @@ class operationCarrot extends PNGRoom {
     super.draw(); 
     drawSprite(animalSprite4); 
     moveBunny(); 
-
+    fill("black"); 
+    rect(width-560, 40, 425, 40);
     fill("red");
     textFont(puppyFont);
     textSize(40);
@@ -568,6 +582,8 @@ class operationRaindrop extends PNGRoom {
 
   draw() {
     super.draw();  
+    fill("black"); 
+    rect(width-525, 40, 350, 40);
     fill("red");
     textFont(puppyFont);
     textSize(40);
@@ -584,7 +600,7 @@ class operationRaindrop extends PNGRoom {
 
       let randX  = random(50, width-50);
      // create the sprite
-      var yarn_ball = createSprite( randX, 0, 88, 88);
+      var yarn_ball = createSprite( randX, 0, 74,64);
      // add the animation to it (important to load the animation just one time)
       yarn_ball.addAnimation('regular',  yarnball, yarnball);
      // add to the group
@@ -596,7 +612,7 @@ class operationRaindrop extends PNGRoom {
 
       let randX  = random(50, width-50);
      // create the sprite
-      var rain_drop = createSprite( randX, 0, 46, 39);
+      var rain_drop = createSprite( randX, 0, 62,53);
      // add the animation to it (important to load the animation just one time)
       rain_drop.addAnimation('regular',  raindrop, raindrop);
      // add to the group
@@ -652,6 +668,8 @@ class operationTennisBall extends PNGRoom {
 
   draw() {
     super.draw();  
+    fill("black"); 
+    rect(width-560, 40, 420, 40);
     fill("red");
     textFont(puppyFont);
     textSize(40);
@@ -677,7 +695,7 @@ class operationTennisBall extends PNGRoom {
 
       let randY  = random(30,400);
      // create the sprite
-      var tennis_ball = createSprite(1290, randY, 45, 45);
+      var tennis_ball = createSprite(1290, randY, 84,74);
      // add the animation to it (important to load the animation just one time)
       tennis_ball.addAnimation('regular',  tennisBall, tennisBall);
      // add to the group
@@ -714,31 +732,27 @@ class operationCheeseMaze extends PNGRoom {
     this.cheeses = new Group(); 
 
     
-    var cheese_sprite = createSprite(1106, 590, 55, 44);
+    var cheese_sprite = createSprite(1106, 590, 100,92);
     cheese_sprite.addAnimation('regular',  cheese_image, cheese_image);
     this.cheeses.add(cheese_sprite); 
     
-    var cheese_sprite2 = createSprite(1156, 62, 55, 44); 
+    var cheese_sprite2 = createSprite(1156, 62, 100,92); 
     cheese_sprite2.addAnimation('regular',  cheese_image, cheese_image);
     this.cheeses.add(cheese_sprite2); 
     
-    var cheese_sprite3 = createSprite(391, 377, 55, 44); 
+    var cheese_sprite3 = createSprite(391, 377,100,92); 
     cheese_sprite3.addAnimation('regular',   cheese_image, cheese_image);
     this.cheeses.add(cheese_sprite3); 
     
-    var cheese_sprite4 = createSprite(81, 615, 55, 44); 
+    var cheese_sprite4 = createSprite(81, 615, 100,92); 
     cheese_sprite4.addAnimation('regular',  cheese_image, cheese_image);
     this.cheeses.add(cheese_sprite4); 
-
-     // add the animation to it (important to load the animation just one time)
-    //   tennis_ball.addAnimation('regular',  tennisBall, tennisBall);
-    //  // add to the group
-    //   this.tennisBalls.add(tennis_ball);
-    // }
   }
 
   draw() {
     super.draw(); 
+    fill("black"); 
+    rect(width-525, 40, 350, 40);
     fill("red");
     textFont(puppyFont);
     textSize(40);
@@ -751,7 +765,7 @@ class operationCheeseMaze extends PNGRoom {
     moveMouse();  
     this.cheeses.draw(); 
     this.cheeses.overlap(animalSprite7, collectCheese);
-
+ 
     if(cheese === 4) {
       adventureManager.changeState("Crosswalk 2"); 
       challengesCompleted+=1; 
